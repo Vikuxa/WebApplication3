@@ -9,9 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication3.Data;
+using WebApplication3.Models;
 
 namespace WebApplication3
 {
@@ -35,6 +37,13 @@ namespace WebApplication3
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
+
+            //string path = Path.Combine(Directory.GetCurrentDirectory(), "Data");
+            //services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
+            //   // Configuration.GetConnectionString("Default").Replace("[DataDirectory]", path)));
+            //   "Data Source=(localdb)\\mssqllocaldb; Database=qqq; Persist Security Info=False; MultipleActiveResultSets=True; Trusted_Connection=True;"));
+            services.AddDbContext<ApplicationContext>(options =>
+        options.UseSqlServer(Configuration.GetConnectionString("MvcMovieContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
