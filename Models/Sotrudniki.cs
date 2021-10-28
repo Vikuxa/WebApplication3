@@ -15,5 +15,7 @@ namespace WebApplication3.Models
         public string o { get; set; }
         public string dolzhnost { get; set; }
         public string tel { get; set; }
+        public List<Technika> Technikas { get; set; }
+        public List<Peremeshenie> Peremeshenies { get; set; }
     }
 }

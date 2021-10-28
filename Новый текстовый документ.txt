@@ -1,0 +1,4 @@
+Add-Migration "MigrateDB" -Context ApplicationContext
+Update-Database
+
+Проблема с миграцией	

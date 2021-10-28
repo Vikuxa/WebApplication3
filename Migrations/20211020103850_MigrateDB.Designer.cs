@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication3.Models;
 
 namespace WebApplication3.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20211020103850_MigrateDB")]
+    partial class MigrateDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,6 +112,9 @@ namespace WebApplication3.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Pomeshenieid")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("data_demontazha")
                         .HasColumnType("datetime2");
 
@@ -126,6 +131,8 @@ namespace WebApplication3.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("Pomeshenieid");
 
                     b.HasIndex("id_material");
 
@@ -168,6 +175,9 @@ namespace WebApplication3.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("Technikaid")
+                        .HasColumnType("int");
+
                     b.Property<string>("firma")
                         .HasColumnType("nvarchar(max)");
 
@@ -185,6 +195,8 @@ namespace WebApplication3.Migrations
 
                     b.HasKey("id");
 
+                    b.HasIndex("Technikaid");
+
                     b.HasIndex("id_pomeshenie");
 
                     b.HasIndex("id_sotrudnik");
@@ -195,7 +207,7 @@ namespace WebApplication3.Migrations
             modelBuilder.Entity("WebApplication3.Models.Peremeshenie", b =>
                 {
                     b.HasOne("WebApplication3.Models.Pomeshenie", "pomeshenie")
-                        .WithMany("Peremeshenies")
+                        .WithMany()
                         .HasForeignKey("id_pomeshenie")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -221,6 +233,10 @@ namespace WebApplication3.Migrations
 
             modelBuilder.Entity("WebApplication3.Models.Rashod_material", b =>
                 {
+                    b.HasOne("WebApplication3.Models.Pomeshenie", null)
+                        .WithMany("Rashod_Materials")
+                        .HasForeignKey("Pomeshenieid");
+
                     b.HasOne("WebApplication3.Models.Material", "material")
                         .WithMany("Rashod_Materials")
                         .HasForeignKey("id_material")
@@ -228,7 +244,7 @@ namespace WebApplication3.Migrations
                         .IsRequired();
 
                     b.HasOne("WebApplication3.Models.Technika", "technika")
-                        .WithMany("Rashod_Materials")
+                        .WithMany()
                         .HasForeignKey("id_technika")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -240,8 +256,12 @@ namespace WebApplication3.Migrations
 
             modelBuilder.Entity("WebApplication3.Models.Technika", b =>
                 {
-                    b.HasOne("WebApplication3.Models.Pomeshenie", "pomeshenie")
+                    b.HasOne("WebApplication3.Models.Technika", null)
                         .WithMany("Technikas")
+                        .HasForeignKey("Technikaid");
+
+                    b.HasOne("WebApplication3.Models.Pomeshenie", "pomeshenie")
+                        .WithMany()
                         .HasForeignKey("id_pomeshenie")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -264,9 +284,7 @@ namespace WebApplication3.Migrations
 
             modelBuilder.Entity("WebApplication3.Models.Pomeshenie", b =>
                 {
-                    b.Navigation("Peremeshenies");
-
-                    b.Navigation("Technikas");
+                    b.Navigation("Rashod_Materials");
                 });
 
             modelBuilder.Entity("WebApplication3.Models.Sotrudniki", b =>
@@ -280,7 +298,7 @@ namespace WebApplication3.Migrations
                 {
                     b.Navigation("Peremeshenies");
 
-                    b.Navigation("Rashod_Materials");
+                    b.Navigation("Technikas");
                 });
 #pragma warning restore 612, 618
         }

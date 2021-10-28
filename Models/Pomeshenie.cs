@@ -15,5 +15,8 @@ namespace WebApplication3.Models
         public int zdanie_nom { get; set; }
         public string ulitsa { get; set; }
         public string gorod { get; set; }
+        //public List<Rashod_material> Rashod_Materials { get; set; }
+        public List<Peremeshenie> Peremeshenies { get; set; }
+        public List<Technika> Technikas { get; set; }
     }
 }
