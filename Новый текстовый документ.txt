@@ -1,4 +1,4 @@
 Add-Migration "MigrateDB" -Context ApplicationContext
-Update-Database
+Update-Database -Context ApplicationContext
 
 Проблема с миграцией	
