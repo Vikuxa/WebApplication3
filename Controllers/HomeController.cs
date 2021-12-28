@@ -22,10 +22,10 @@ namespace WebApplication3.Controllers
         {
             return View();
         }
-        public IActionResult laba3()
-        {
-            return View();
-        }
+        //public IActionResult laba3()
+        //{
+        //    return View();
+        //}
 
         public IActionResult Privacy()
         {

@@ -1,0 +1,112 @@
+﻿@model SotrudnikiViewModel
+
+    @{
+        ViewData["Title"] = "Лабораторка № 3";
+    }
+
+    <style type="text/css">
+        TABLE {
+            /*border: 5px double #000;*/ /*Рамка вокруг таблицы*/
+            margin: auto;
+            font-family: 'Century Gothic';
+        }
+
+        TH {
+            padding: 10px; /* Поля вокруг текста */
+            /*border: 2px solid #000;*/ /* Рамка вокруг ячеек */
+            text-align: center; /* Выравнивание по центру */
+        }
+
+        TD {
+            padding: 10px; /* Поля вокруг текста */
+            text-align: center; /* Выравнивание по центру */
+        }
+    </style>
+
+    <div class="text-center">
+        <h2 class="display-4" style="font-family: 'Century Gothic' "> Лабораторка № 3</h2>
+
+    </div>
+
+    <div class="text-left">
+        <p style="font-size: 28px; font-family: 'Century Gothic' "> Функциональность из мин. требований:</p>
+        <ul style="font-size: 20px; font-family: 'Century Gothic' ">
+            <li>Отслеживание перемещений</li>
+            <li>Расход выданных материалов</li>
+            <li>Учет сотрудников</li>
+        </ul>
+        <input type="submit" id="hider" value="Добавить сотрудника" class="btn btn-dark">
+        <form asp-action="Create">
+            <div class="row">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="col-md-6">
+                    <section>
+                        <div id="pole1" class="form-group" hidden="true">
+                            <p>Фамилия <input type="text" class="form-control" asp-for="Sotrudniki.F"> </p>
+                            <p>Имя <input type="text" class="form-control" asp-for="Sotrudniki.I"> </p>
+                            <p>Отчество <input type="text" class="form-control" asp-for="Sotrudniki.O"> </p>
+
+                        </div>
+                    </section>
+                </div>
+                <div class="col-md-5 col-md-offset-2">
+                    <section>
+                        <div id="pole2" class="form-group" hidden="true">
+                            <p>Должность <input type="text" class="form-control" asp-for="Sotrudniki.Dolzhnost"> </p>
+                            <p>Телефон <input type="text" class="form-control" asp-for="Sotrudniki.Tel"> </p>
+                            <input type="submit" id="hider2" value="Скрыть" class="btn btn-light">
+                            <input type="submit" value="Добавить" class="btn btn-dark" asp-action="Create" asp-controller="Sotr">
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </form>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th> Фамилия </th>
+                    <th> Имя </th>
+                    <th> Отчество </th>
+                    <th> Должность </th>
+                    <th> Телефон </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ListSotr)
+                {
+                <tr>
+                    <td> @item.F </td>
+                    <td> @item.I </td>
+                    <td> @item.O </td>
+                    <td> @item.Dolzhnost </td>
+                    <td> @item.Tel </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+
+
+<ul style="font-size: 20px; font-family: 'Century Gothic' ">
+    <li>Учет оборудования</li>
+</ul>
+
+</div>
+
+<script>
+    document.getElementById('hider').onclick = function () {
+        document.getElementById('pole1').hidden = false;
+        document.getElementById('pole2').hidden = false;
+    }
+    document.getElementById('hider2').onclick = function () {
+        document.getElementById('pole1').hidden = true;
+        document.getElementById('pole2').hidden = true;
+    }
+</script>
+
+@section Scripts
+    {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

@@ -13,7 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication3.Data;
-using WebApplication3.Models;
+using EasyData.Services;
 
 namespace WebApplication3
 {
@@ -29,9 +29,11 @@ namespace WebApplication3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<WWWContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("MvcMovieContext")));
+
+            services.AddDbContext<ApplicationDbContext>(options => //почему если эту строку закоментить, то не запускается?
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -42,8 +44,7 @@ namespace WebApplication3
             //services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(
             //   // Configuration.GetConnectionString("Default").Replace("[DataDirectory]", path)));
             //   "Data Source=(localdb)\\mssqllocaldb; Database=qqq; Persist Security Info=False; MultipleActiveResultSets=True; Trusted_Connection=True;"));
-            services.AddDbContext<ApplicationContext>(options =>
-        options.UseSqlServer(Configuration.GetConnectionString("MvcMovieContext")));
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,6 +74,12 @@ namespace WebApplication3
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapEasyData(options =>
+                {
+                    options.UseDbContext<WWWContext>();
+                });
+
                 endpoints.MapRazorPages();
             });
         }
